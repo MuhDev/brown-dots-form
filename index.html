@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>براون دوتس - طلب مسبق</title>
     <meta name="description" content="طلب مسبق لشوكولاتة العيد من براون دوتس - الكمية محدودة">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,6 +19,23 @@
             </div>
             <h1>براون دوتس - طلب مسبق</h1>
             <p class="subtitle">طلب مسبق لشوكولاتة العيد من براون دوتس<br>الكمية محدودة</p>
+
+            <!-- Product Description -->
+            <div class="product-description">
+                <div class="product-desc-header">
+                    <span class="product-desc-icon">🍫</span>
+                    <span class="product-desc-weight">الوزن: <strong>1.250 كيلو</strong></span>
+                </div>
+                <div class="product-desc-fillings">
+                    <p class="fillings-title">✨ أربع حشوات فاخرة ✨</p>
+                    <div class="fillings-grid">
+                        <div class="filling-item"><span class="filling-dot"></span> تمر وهيل</div>
+                        <div class="filling-item"><span class="filling-dot"></span> بنت بيتر</div>
+                        <div class="filling-item"><span class="filling-dot"></span> بندق وسولتد كراميل</div>
+                        <div class="filling-item"><span class="filling-dot"></span> فيوتين</div>
+                    </div>
+                </div>
+            </div>
             
             <div class="price-badge">
                 <span class="price-label">سعر المنتج</span>
@@ -119,42 +137,23 @@
                             <span>سعر توصيل جدة: <strong>30 - 45 ر.س</strong></span>
                             <span>سعر توصيل مكة: <strong>75 ر.س</strong></span>
                         </div>
+                        <p class="delivery-note-extra">💰 مبلغ التوصيل يُدفع للمندوب</p>
                     </div>
 
 
-                    <!-- City -->
+                    <!-- Map Location Picker -->
                     <div class="form-group">
-                        <label for="city"><span class="required">*</span> المدينة</label>
-                        <select id="city" name="city" class="form-control">
-                            <option value="" disabled selected>اختر المدينة</option>
-                            <option value="jeddah">جدة</option>
-                            <option value="makkah">مكة</option>
-                        </select>
-                        <div class="error-message" id="city-error">يرجى اختيار المدينة</div>
-                    </div>
-
-                    <!-- Address Grid -->
-                    <div class="address-grid">
-                        <div class="form-group full-width">
-                            <label for="district"><span class="required">*</span> الحي</label>
-                            <input type="text" id="district" name="district" class="form-control" placeholder="اسم الحي">
-                            <div class="error-message" id="district-error">يرجى إدخال اسم الحي</div>
+                        <label><span class="required">*</span> حدد موقع التوصيل</label>
+                        <div class="map-container">
+                            <div id="map"></div>
+                            <p class="map-hint" id="mapHint">📍 اضغط على الخريطة لتحديد موقع التوصيل</p>
                         </div>
-                        <div class="form-group full-width">
-                            <label for="street"><span class="required">*</span> الشارع</label>
-                            <input type="text" id="street" name="street" class="form-control" placeholder="اسم الشارع">
-                            <div class="error-message" id="street-error">يرجى إدخال اسم الشارع</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="building"><span class="required">*</span> رقم العمارة</label>
-                            <input type="text" id="building" name="building" class="form-control" placeholder="رقم العمارة">
-                            <div class="error-message" id="building-error">يرجى إدخال رقم العمارة</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="apartment"><span class="required">*</span> رقم الشقة</label>
-                            <input type="text" id="apartment" name="apartment" class="form-control" placeholder="رقم الشقة">
-                            <div class="error-message" id="apartment-error">يرجى إدخال رقم الشقة</div>
-                        </div>
+                        <button type="button" class="locate-me-btn" id="locateMeBtn">
+                            📍 حدد موقعي الحالي
+                        </button>
+                        <input type="hidden" id="deliveryLat" name="deliveryLat">
+                        <input type="hidden" id="deliveryLng" name="deliveryLng">
+                        <div class="error-message" id="map-error">يرجى تحديد موقع التوصيل على الخريطة</div>
                     </div>
 
                     <!-- Delivery Date -->
@@ -200,6 +199,41 @@
                                     <span class="date-info">رمضان</span>
                                 </label>
                             </div>
+                            <div class="date-option">
+                                <input type="radio" id="delivery-date-1" name="delivery_date" value="1-shawwal">
+                                <label for="delivery-date-1">
+                                    <span class="date-day">1</span>
+                                    <span class="date-info">شوال</span>
+                                </label>
+                            </div>
+                            <div class="date-option">
+                                <input type="radio" id="delivery-date-2" name="delivery_date" value="2-shawwal">
+                                <label for="delivery-date-2">
+                                    <span class="date-day">2</span>
+                                    <span class="date-info">شوال</span>
+                                </label>
+                            </div>
+                            <div class="date-option">
+                                <input type="radio" id="delivery-date-3" name="delivery_date" value="3-shawwal">
+                                <label for="delivery-date-3">
+                                    <span class="date-day">3</span>
+                                    <span class="date-info">شوال</span>
+                                </label>
+                            </div>
+                            <div class="date-option">
+                                <input type="radio" id="delivery-date-4" name="delivery_date" value="4-shawwal">
+                                <label for="delivery-date-4">
+                                    <span class="date-day">4</span>
+                                    <span class="date-info">شوال</span>
+                                </label>
+                            </div>
+                            <div class="date-option">
+                                <input type="radio" id="delivery-date-5" name="delivery_date" value="5-shawwal">
+                                <label for="delivery-date-5">
+                                    <span class="date-day">5</span>
+                                    <span class="date-info">شوال</span>
+                                </label>
+                            </div>
                         </div>
                         <div class="error-message" id="delivery-date-error">يرجى اختيار تاريخ التوصيل</div>
                     </div>
@@ -208,7 +242,29 @@
                 <!-- Pickup Fields -->
                 <div class="pickup-fields" id="pickupFields">
                     <div class="section-divider">
-                        <span class="divider-icon">📅</span>
+                        <span class="divider-icon">�</span>
+                        موقع المحل
+                    </div>
+
+                    <div class="pickup-map-card">
+                        <div class="pickup-map-container">
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3709.8!2d39.1501964!3d21.5933525!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15c3dbbe03754929%3A0xab6489ee9c9c5697!2sBrown%20Dots%20%7C%20%D8%A8%D8%B1%D8%A7%D9%88%D9%86%20%D8%AF%D9%88%D8%AA%D8%B3!5e0!3m2!1sar!2ssa!4v1709769600000"
+                                width="100%"
+                                height="250"
+                                style="border:0;"
+                                allowfullscreen=""
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                        <a href="https://maps.app.goo.gl/4JgAuHJCKWXX9ZXf9" target="_blank" class="directions-btn">
+                            🗺️ افتح في خرائط قوقل
+                        </a>
+                    </div>
+
+                    <div class="section-divider">
+                        <span class="divider-icon">�📅</span>
                         موعد الاستلام
                     </div>
                     <div class="form-group">
@@ -296,6 +352,7 @@
         </div>
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

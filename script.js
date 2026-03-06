@@ -39,11 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 deliveryFields.classList.remove('active');
                 // Reset delivery fields
                 document.querySelectorAll('input[name="delivery_date"]').forEach(r => r.checked = false);
-                document.getElementById('city').selectedIndex = 0;
-                document.getElementById('district').value = '';
-                document.getElementById('street').value = '';
-                document.getElementById('building').value = '';
-                document.getElementById('apartment').value = '';
+                document.getElementById('deliveryLat').value = '';
+                document.getElementById('deliveryLng').value = '';
+                if (window.deliveryMarker) {
+                    window.deliveryMap.removeLayer(window.deliveryMarker);
+                    window.deliveryMarker = null;
+                    document.getElementById('mapHint').classList.remove('hidden');
+                    document.querySelector('.map-container').classList.remove('has-marker');
+                }
             }
 
             // Clear delivery method error
@@ -123,34 +126,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!method) return false;
 
         if (method.value === 'delivery') {
-            // City
-            const city = document.getElementById('city');
-            if (!city.value) {
-                showError('city', 'city-error', 'يرجى اختيار المدينة');
+            // Map location
+            const lat = document.getElementById('deliveryLat').value;
+            const lng = document.getElementById('deliveryLng').value;
+            if (!lat || !lng) {
+                showError(null, 'map-error', 'يرجى تحديد موقع التوصيل على الخريطة');
                 valid = false;
             } else {
-                clearError('city-error');
-                city.classList.remove('error');
-            }
-
-            // District
-            const district = document.getElementById('district');
-            if (!district.value.trim()) {
-                showError('district', 'district-error', 'يرجى إدخال اسم الحي');
-                valid = false;
-            } else {
-                clearError('district-error');
-                district.classList.remove('error');
-            }
-
-            // Street
-            const street = document.getElementById('street');
-            if (!street.value.trim()) {
-                showError('street', 'street-error', 'يرجى إدخال اسم الشارع');
-                valid = false;
-            } else {
-                clearError('street-error');
-                street.classList.remove('error');
+                clearError('map-error');
             }
 
             // Delivery Date
@@ -160,26 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 valid = false;
             } else {
                 clearError('delivery-date-error');
-            }
-
-            // Building
-            const building = document.getElementById('building');
-            if (!building.value.trim()) {
-                showError('building', 'building-error', 'يرجى إدخال رقم العمارة');
-                valid = false;
-            } else {
-                clearError('building-error');
-                building.classList.remove('error');
-            }
-
-            // Apartment
-            const apartment = document.getElementById('apartment');
-            if (!apartment.value.trim()) {
-                showError('apartment', 'apartment-error', 'يرجى إدخال رقم الشقة');
-                valid = false;
-            } else {
-                clearError('apartment-error');
-                apartment.classList.remove('error');
             }
 
         } else if (method.value === 'pickup') {
@@ -339,11 +302,10 @@ document.addEventListener('DOMContentLoaded', () => {
         formDataObj.append('deliveryMethod', method);
 
         if (method === 'delivery') {
-            formDataObj.append('city', document.getElementById('city').value);
-            formDataObj.append('district', document.getElementById('district').value.trim());
-            formDataObj.append('street', document.getElementById('street').value.trim());
-            formDataObj.append('building', document.getElementById('building').value.trim());
-            formDataObj.append('apartment', document.getElementById('apartment').value.trim());
+            const lat = document.getElementById('deliveryLat').value;
+            const lng = document.getElementById('deliveryLng').value;
+            const googleMapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+            formDataObj.append('location', googleMapsLink);
             formDataObj.append('deliveryDate', document.querySelector('input[name="delivery_date"]:checked').value);
         } else {
             formDataObj.append('pickupDate', document.querySelector('input[name="pickup_date"]:checked').value);
@@ -454,29 +416,99 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startAutoPlay();
 
-    // Touch/swipe support
-    let touchStartX = 0;
-    let touchEndX = 0;
+    // ===== Leaflet Map =====
+    let mapInitialized = false;
 
-    if (carouselTrack) {
-        carouselTrack.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
+    function initMap() {
+        if (mapInitialized) return;
+        mapInitialized = true;
 
-        carouselTrack.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            const diff = touchStartX - touchEndX;
-            // RTL: swipe directions are reversed
-            if (Math.abs(diff) > 50) {
-                if (diff < 0) {
-                    // Swipe right in RTL = next
-                    goToSlide((currentSlide + 1) % totalSlides);
-                } else {
-                    // Swipe left in RTL = prev
-                    goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
-                }
-                resetAutoPlay();
+        // Center on Jeddah
+        const map = L.map('map', {
+            center: [21.5, 39.2],
+            zoom: 11,
+            zoomControl: true,
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap',
+            maxZoom: 19,
+        }).addTo(map);
+
+        window.deliveryMap = map;
+        window.deliveryMarker = null;
+
+        const latInput = document.getElementById('deliveryLat');
+        const lngInput = document.getElementById('deliveryLng');
+        const mapHint = document.getElementById('mapHint');
+        const mapContainer = document.querySelector('.map-container');
+
+        // Custom marker icon using brown theme
+        const brownIcon = L.divIcon({
+            className: 'custom-marker',
+            html: '<div style="background:linear-gradient(135deg,#5C3D2E,#7A5C4F);width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.3);"></div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 30],
+        });
+
+        function placeMarker(latlng) {
+            if (window.deliveryMarker) {
+                window.deliveryMarker.setLatLng(latlng);
+            } else {
+                window.deliveryMarker = L.marker(latlng, { icon: brownIcon }).addTo(map);
             }
-        }, { passive: true });
+            latInput.value = latlng.lat.toFixed(6);
+            lngInput.value = latlng.lng.toFixed(6);
+            mapHint.classList.add('hidden');
+            mapContainer.classList.add('has-marker');
+            clearError('map-error');
+        }
+
+        // Click on map to place marker
+        map.on('click', (e) => {
+            placeMarker(e.latlng);
+        });
+
+        // Locate me button
+        const locateBtn = document.getElementById('locateMeBtn');
+        locateBtn.addEventListener('click', () => {
+            if (!navigator.geolocation) {
+                alert('المتصفح لا يدعم تحديد الموقع');
+                return;
+            }
+            locateBtn.classList.add('loading');
+            locateBtn.textContent = '⏳ جاري تحديد الموقع...';
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const latlng = L.latLng(pos.coords.latitude, pos.coords.longitude);
+                    map.setView(latlng, 16);
+                    placeMarker(latlng);
+                    locateBtn.classList.remove('loading');
+                    locateBtn.textContent = '📍 حدد موقعي الحالي';
+                },
+                (err) => {
+                    alert('تعذر تحديد الموقع. تأكد من تفعيل خدمة الموقع.');
+                    locateBtn.classList.remove('loading');
+                    locateBtn.textContent = '📍 حدد موقعي الحالي';
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        });
     }
+
+    // Initialize map when delivery is selected
+    deliveryRadios.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            if (e.target.value === 'delivery') {
+                // Delay to allow CSS transition/display change
+                setTimeout(() => {
+                    initMap();
+                    if (window.deliveryMap) {
+                        window.deliveryMap.invalidateSize();
+                    }
+                }, 100);
+            }
+        });
+    });
 });

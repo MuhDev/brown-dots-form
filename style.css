@@ -249,7 +249,209 @@ body::after {
 
 /* ===== Form Card ===== */
 
+/* ===== Product Description ===== */
+.product-description {
+    background: linear-gradient(135deg, var(--white) 0%, var(--cream-lighter) 100%);
+    border: 1px solid var(--cream-dark);
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    margin: 20px auto 0;
+    max-width: 440px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.product-desc-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--cream-dark);
+}
+
+.product-desc-icon {
+    font-size: 1.6rem;
+}
+
+.product-desc-weight {
+    font-size: 1rem;
+    color: var(--text-medium);
+    font-weight: 500;
+}
+
+.product-desc-weight strong {
+    color: var(--brown-dark);
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.fillings-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin-bottom: 12px;
+}
+
+.fillings-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.filling-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-medium);
+    padding: 8px 12px;
+    background: rgba(92, 61, 46, 0.04);
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.filling-item:hover {
+    background: rgba(92, 61, 46, 0.08);
+    transform: translateY(-1px);
+}
+
+.filling-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--brown-dark), var(--brown-accent));
+    flex-shrink: 0;
+}
+
 /* ===== Delivery Note ===== */
+.delivery-note-extra {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #F0D98C;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+}
+
+/* ===== Map Location Picker ===== */
+.map-container {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 2px solid var(--cream-dark);
+    position: relative;
+    box-shadow: var(--shadow-sm);
+}
+
+#map {
+    width: 100%;
+    height: 350px;
+    z-index: 1;
+}
+
+.map-hint {
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-medium);
+    padding: 10px;
+    background: var(--cream-lighter);
+    margin: 0;
+    border-top: 1px solid var(--cream-dark);
+}
+
+.map-hint.hidden {
+    display: none;
+}
+
+.locate-me-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 10px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    background: linear-gradient(135deg, var(--cream-lighter) 0%, var(--cream) 100%);
+    border: 2px solid var(--cream-dark);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.locate-me-btn:hover {
+    background: var(--white);
+    border-color: var(--brown-light);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.locate-me-btn:active {
+    transform: translateY(0);
+}
+
+.locate-me-btn.loading {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.map-container.has-marker {
+    border-color: var(--brown-medium);
+}
+
+/* ===== Pickup Map Preview ===== */
+.pickup-map-card {
+    margin-bottom: 22px;
+}
+
+.pickup-map-container {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 2px solid var(--cream-dark);
+}
+
+.pickup-map-container iframe {
+    display: block;
+    border-radius: var(--radius-md);
+}
+
+.directions-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 10px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--cream-lighter);
+    background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown-medium) 100%);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.directions-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.directions-btn:active {
+    transform: translateY(0);
+}
+
 .delivery-note {
     background: linear-gradient(135deg, #FFF8E7 0%, #FFF3D4 100%);
     border: 1px solid #F0D98C;
