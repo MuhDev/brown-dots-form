@@ -359,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.textContent = 'جاري إرسال الطلب...';
 
         // POST to webhook
-        fetch('https://n8n.tawreedplus.com/webhook-test/6a5ee28f-8e49-41dc-80d4-4cc5134685eb', {
+        fetch('https://n8n.tawreedplus.com/webhook/6a5ee28f-8e49-41dc-80d4-4cc5134685eb', {
             method: 'POST',
             body: formDataObj,
         })
