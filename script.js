@@ -41,6 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('input[name="delivery_date"]').forEach(r => r.checked = false);
                 document.getElementById('deliveryLat').value = '';
                 document.getElementById('deliveryLng').value = '';
+                document.getElementById('city').value = '';
+                document.getElementById('district').value = '';
+                document.getElementById('houseNumber').value = '';
+                clearError('city-error');
+                clearError('district-error');
+                clearError('house-error');
                 if (window.deliveryMarker) {
                     window.deliveryMap.removeLayer(window.deliveryMarker);
                     window.deliveryMarker = null;
@@ -134,6 +140,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 valid = false;
             } else {
                 clearError('map-error');
+            }
+
+            // Address Details
+            const city = document.getElementById('city').value.trim();
+            const district = document.getElementById('district').value.trim();
+            const houseNumber = document.getElementById('houseNumber').value.trim();
+
+            if (!city) {
+                showError(null, 'city-error', 'يرجى إدخال المدينة');
+                valid = false;
+            } else {
+                clearError('city-error');
+            }
+
+            if (!district) {
+                showError(null, 'district-error', 'يرجى إدخال اسم الحي');
+                valid = false;
+            } else {
+                clearError('district-error');
+            }
+
+            if (!houseNumber) {
+                showError(null, 'house-error', 'يرجى إدخال رقم البيت');
+                valid = false;
+            } else {
+                clearError('house-error');
             }
 
             // Delivery Date
@@ -306,6 +338,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const lng = document.getElementById('deliveryLng').value;
             const googleMapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
             formDataObj.append('location', googleMapsLink);
+
+            formDataObj.append('city', document.getElementById('city').value.trim());
+            formDataObj.append('district', document.getElementById('district').value.trim());
+            formDataObj.append('houseNumber', document.getElementById('houseNumber').value.trim());
+
             formDataObj.append('deliveryDate', document.querySelector('input[name="delivery_date"]:checked').value);
         } else {
             formDataObj.append('pickupDate', document.querySelector('input[name="pickup_date"]:checked').value);
@@ -321,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.textContent = 'جاري إرسال الطلب...';
 
         // POST to webhook
-        fetch('https://n8n.tawreedplus.com/webhook/6a5ee28f-8e49-41dc-80d4-4cc5134685eb', {
+        fetch('https://n8n.tawreedplus.com/webhook-test/6a5ee28f-8e49-41dc-80d4-4cc5134685eb', {
             method: 'POST',
             body: formDataObj,
         })
