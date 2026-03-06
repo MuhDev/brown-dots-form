@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>براون دوتس - طلب مسبق</title>
+    <meta name="description" content="طلب مسبق لشوكولاتة العيد من براون دوتس - الكمية محدودة">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-wrapper">
+                <img src="assets/logo.jpg" alt="براون دوتس - Brown Dots" id="logo">
+            </div>
+            <h1>براون دوتس - طلب مسبق</h1>
+            <p class="subtitle">طلب مسبق لشوكولاتة العيد من براون دوتس<br>الكمية محدودة</p>
+            
+            <div class="price-badge">
+                <span class="price-label">سعر المنتج</span>
+                <span class="price-amount">395 ر.س</span>
+                <span class="price-label">شامل الضريبة المضافة</span>
+            </div>
+
+            <div class="limited-badge">
+                الكمية محدودة - اطلب الآن
+            </div>
+        </header>
+
+        <!-- Product Images Carousel -->
+        <div class="product-showcase">
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-slide">
+                    <img src="assets/product1.JPG" alt="شوكولاتة العيد من براون دوتس">
+                </div>
+                <div class="carousel-slide">
+                    <img src="assets/product2.jpg" alt="شوكولاتة العيد من براون دوتس">
+                </div>
+                <div class="carousel-slide">
+                    <img src="assets/product3.JPG" alt="شوكولاتة العيد من براون دوتس">
+                </div>
+            </div>
+            <div class="carousel-dots" id="carouselDots">
+                <span class="dot active" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
+                <span class="dot" data-index="2"></span>
+            </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="form-card">
+            <form id="preOrderForm" novalidate>
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name"><span class="required">*</span> الاسم</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="أدخل اسمك الكامل" required>
+                    <div class="error-message" id="name-error">يرجى إدخال الاسم</div>
+                </div>
+
+                <!-- Phone -->
+                <div class="form-group">
+                    <label for="phone"><span class="required">*</span> رقم الجوال</label>
+                    <input type="tel" id="phone" name="phone" class="form-control" placeholder="05XXXXXXXX" maxlength="10" required>
+                    <div class="error-message" id="phone-error">يجب أن يكون رقم الجوال 10 أرقام ويبدأ بـ 05</div>
+                </div>
+
+                <!-- Quantity -->
+                <div class="form-group">
+                    <label for="quantity"><span class="required">*</span> الكمية</label>
+                    <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="50" value="1" required>
+                </div>
+
+                <!-- Total Display -->
+                <div class="total-display">
+                    <span class="total-label">الإجمالي (شامل الضريبة)</span>
+                    <span class="total-amount" id="totalAmount">395 ر.س</span>
+                </div>
+
+                <!-- Delivery Method -->
+                <div class="section-divider">
+                    <span class="divider-icon">📦</span>
+                    طريقة الاستلام
+                </div>
+
+                <div class="form-group">
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="pickup" name="delivery_method" value="pickup">
+                            <label for="pickup">
+                                <span class="radio-icon">🏪</span>
+                                استلام من المحل
+                            </label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="delivery" name="delivery_method" value="delivery">
+                            <label for="delivery">
+                                <span class="radio-icon">🚚</span>
+                                توصيل للموقع
+                            </label>
+                        </div>
+                    </div>
+                    <div class="error-message" id="delivery-error">يرجى اختيار طريقة الاستلام</div>
+                </div>
+
+                <!-- Delivery Fields -->
+                <div class="delivery-fields" id="deliveryFields">
+                    <div class="section-divider">
+                        <span class="divider-icon">📍</span>
+                        عنوان التوصيل
+                    </div>
+
+                    <div class="delivery-note">
+                        <p class="delivery-note-title">🚛 التوصيل عن طريق مندوب مستقل</p>
+                        <div class="delivery-note-prices">
+                            <span>سعر توصيل جدة: <strong>30 - 45 ر.س</strong></span>
+                            <span>سعر توصيل مكة: <strong>75 ر.س</strong></span>
+                        </div>
+                    </div>
+
+
+                    <!-- City -->
+                    <div class="form-group">
+                        <label for="city"><span class="required">*</span> المدينة</label>
+                        <select id="city" name="city" class="form-control">
+                            <option value="" disabled selected>اختر المدينة</option>
+                            <option value="jeddah">جدة</option>
+                            <option value="makkah">مكة</option>
+                        </select>
+                        <div class="error-message" id="city-error">يرجى اختيار المدينة</div>
+                    </div>
+
+                    <!-- Address Grid -->
+                    <div class="address-grid">
+                        <div class="form-group full-width">
+                            <label for="district"><span class="required">*</span> الحي</label>
+                            <input type="text" id="district" name="district" class="form-control" placeholder="اسم الحي">
+                            <div class="error-message" id="district-error">يرجى إدخال اسم الحي</div>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="street"><span class="required">*</span> الشارع</label>
+                            <input type="text" id="street" name="street" class="form-control" placeholder="اسم الشارع">
+                            <div class="error-message" id="street-error">يرجى إدخال اسم الشارع</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="building"><span class="required">*</span> رقم العمارة</label>
+                            <input type="text" id="building" name="building" class="form-control" placeholder="رقم العمارة">
+                            <div class="error-message" id="building-error">يرجى إدخال رقم العمارة</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="apartment"><span class="required">*</span> رقم الشقة</label>
+                            <input type="text" id="apartment" name="apartment" class="form-control" placeholder="رقم الشقة">
+                            <div class="error-message" id="apartment-error">يرجى إدخال رقم الشقة</div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Date -->
+                    <div class="section-divider">
+                        <span class="divider-icon">📅</span>
+                        تاريخ التوصيل
+                    </div>
+                    <div class="form-group">
+                        <label><span class="required">*</span> اختر تاريخ التوصيل</label>
+                        <div class="date-grid">
+                            <div class="date-option">
+                                <input type="radio" id="delivery-date-25" name="delivery_date" value="25-ramadan">
+                                <label for="delivery-date-25">
+                                    <span class="date-day">25</span>
+                                    <span class="date-info">رمضان</span>
+                                </label>
+                            </div>
+                            <div class="date-option">
+                                <input type="radio" id="delivery-date-26" name="delivery_date" value="26-ramadan">
+                                <label for="delivery-date-26">
+                                    <span class="date-day">26</span>
+                                    <span class="date-info">رمضان</span>
+                                </label>
+                            </div>
+                            <div class="date-option">
+                                <input type="radio" id="delivery-date-27" name="delivery_date" value="27-ramadan">
+                                <label for="delivery-date-27">
+                                    <span class="date-day">27</span>
+                                    <span class="date-info">رمضان</span>
+                                </label>
+                            </div>
+                            <div class="date-option">
+                                <input type="radio" id="delivery-date-28" name="delivery_date" value="28-ramadan">
+                                <label for="delivery-date-28">
+                                    <span class="date-day">28</span>
+                                    <span class="date-info">رمضان</span>
+                                </label>
+                            </div>
+                            <div class="date-option">
+                                <input type="radio" id="delivery-date-29" name="delivery_date" value="29-ramadan">
+                                <label for="delivery-date-29">
+                                    <span class="date-day">29</span>
+                                    <span class="date-info">رمضان</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="error-message" id="delivery-date-error">يرجى اختيار تاريخ التوصيل</div>
+                    </div>
+                </div>
+
+                <!-- Pickup Fields -->
+                <div class="pickup-fields" id="pickupFields">
+                    <div class="section-divider">
+                        <span class="divider-icon">📅</span>
+                        موعد الاستلام
+                    </div>
+                    <div class="form-group">
+                        <label><span class="required">*</span> اختر موعد الاستلام</label>
+                        <div class="date-grid">
+                            <div class="date-option">
+                                <input type="radio" id="pickup-date-29" name="pickup_date" value="29-ramadan">
+                                <label for="pickup-date-29">
+                                    <span class="date-day">29</span>
+                                    <span class="date-info">رمضان</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="error-message" id="pickup-date-error">يرجى اختيار موعد الاستلام</div>
+                    </div>
+                </div>
+
+                <!-- Payment Section -->
+                <div class="section-divider">
+                    <span class="divider-icon">💳</span>
+                    الدفع
+                </div>
+
+                <div class="bank-details-card">
+                    <p class="bank-details-title">التفاصيل البنكية للتحويل</p>
+                    <div class="bank-detail-row">
+                        <span class="bank-detail-label">اسم البنك</span>
+                        <span class="bank-detail-value">بنك الراجحي</span>
+                    </div>
+                    <div class="bank-detail-row">
+                        <span class="bank-detail-label">رقم الحساب</span>
+                        <div class="iban-wrapper">
+                            <span class="bank-detail-value iban-value">314608016290794</span>
+                            <button type="button" class="copy-btn copy-account-btn" title="نسخ رقم الحساب">📋</button>
+                        </div>
+                    </div>
+                    <div class="bank-detail-row">
+                        <span class="bank-detail-label">الآيبان (IBAN)</span>
+                        <div class="iban-wrapper">
+                            <span class="bank-detail-value iban-value" id="ibanValue">SR1780000314608016290794</span>
+                            <button type="button" class="copy-btn" id="copyIbanBtn" title="نسخ الآيبان">📋</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentReceipt"><span class="required">*</span> إيصال الدفع</label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <input type="file" id="paymentReceipt" name="paymentReceipt" accept="image/*,.pdf" hidden>
+                        <div class="file-upload-content" id="fileUploadContent">
+                            <span class="file-upload-icon">📤</span>
+                            <p class="file-upload-text">اضغط هنا لرفع إيصال الدفع</p>
+                            <p class="file-upload-hint">صورة أو ملف PDF</p>
+                        </div>
+                        <div class="file-upload-preview" id="filePreview" style="display:none;">
+                            <span class="file-name" id="fileName"></span>
+                            <button type="button" class="file-remove-btn" id="fileRemoveBtn">✕</button>
+                        </div>
+                    </div>
+                    <div class="error-message" id="receipt-error">يرجى رفع إيصال الدفع</div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    تأكيد الطلب المسبق ✨
+                </button>
+
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2026 <a href="#">براون دوتس</a> - جميع الحقوق محفوظة</p>
+        </footer>
+
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="success-icon">✓</div>
+            <h3>تم استلام طلبك بنجاح! 🎉</h3>
+            <p>شكراً لك على طلبك المسبق من براون دوتس.<br>سيتم التواصل معك قريباً لتأكيد الطلب.</p>
+            <button class="modal-close-btn" id="modalCloseBtn">حسناً</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
