@@ -18,25 +18,8 @@
                 <img src="assets/logo.jpg" alt="براون دوتس - Brown Dots" id="logo">
             </div>
             <h1>براون دوتس - طلب مسبق</h1>
-            <p class="subtitle">طلب مسبق لشوكولاتة العيد من براون دوتس<br>الكمية محدودة</p>
+            <p class="subtitle">طلب مسبق لشوكولاتة العيد من براون دوتس</p>
 
-            <!-- Product Description -->
-            <div class="product-description">
-                <div class="product-desc-header">
-                    <span class="product-desc-icon">🍫</span>
-                    <span class="product-desc-weight">الوزن: <strong>1.250 كيلو</strong></span>
-                </div>
-                <div class="product-desc-fillings">
-                    <p class="fillings-title">✨ أربع حشوات فاخرة ✨</p>
-                    <div class="fillings-grid">
-                        <div class="filling-item"><span class="filling-dot"></span> تمر وهيل</div>
-                        <div class="filling-item"><span class="filling-dot"></span> بنت بيتر</div>
-                        <div class="filling-item"><span class="filling-dot"></span> بندق وسولتد كراميل</div>
-                        <div class="filling-item"><span class="filling-dot"></span> فيوتين</div>
-                    </div>
-                </div>
-            </div>
-            
             <div class="price-badge">
                 <span class="price-label">سعر المنتج</span>
                 <span class="price-amount">395 ر.س</span>
@@ -65,6 +48,22 @@
                 <span class="dot active" data-index="0"></span>
                 <span class="dot" data-index="1"></span>
                 <span class="dot" data-index="2"></span>
+            </div>
+        </div>
+
+        <!-- Product Description -->
+        <div class="product-description" style="margin-bottom: 28px;">
+            <div class="product-desc-header">
+                <span class="product-desc-weight"><strong>1.250 كيلو</strong></span>
+            </div>
+            <div class="product-desc-fillings">
+                <p class="fillings-title">✨ أربع حشوات فاخرة ✨</p>
+                <div class="fillings-grid">
+                    <div class="filling-item"><span class="filling-dot"></span> تمر وهيل</div>
+                    <div class="filling-item"><span class="filling-dot"></span> بينت بتر</div>
+                    <div class="filling-item"><span class="filling-dot"></span> بندق وسولتد كراميل</div>
+                    <div class="filling-item"><span class="filling-dot"></span> كرانشي</div>
+                </div>
             </div>
         </div>
 
@@ -159,7 +158,7 @@
                     <!-- Address Details -->
                     <div class="form-group">
                         <label for="city"><span class="required">*</span> المدينة</label>
-                        <input type="text" id="city" name="city" class="form-control" placeholder="مثال: جدة">
+                        <input type="text" id="city" name="city" class="form-control" placeholder="جدة أو مكة" readonly style="background-color: var(--cream-lighter); cursor: not-allowed;">
                         <div class="error-message" id="city-error">يرجى إدخال المدينة</div>
                     </div>
                     <div class="address-grid">
@@ -260,6 +259,13 @@
 
                 <!-- Pickup Fields -->
                 <div class="pickup-fields" id="pickupFields">
+                    <div class="pickup-note">
+                        <p class="pickup-note-title">⏰ أوقات الاستلام</p>
+                        <div class="pickup-note-text">
+                            من الساعة <strong>8:30 مساءً</strong> إلى الساعة <strong>3:00 صباحاً</strong>
+                        </div>
+                    </div>
+
                     <div class="section-divider">
                         <span class="divider-icon">�</span>
                         موقع المحل
@@ -309,6 +315,10 @@
 
                 <div class="bank-details-card">
                     <p class="bank-details-title">التفاصيل البنكية للتحويل</p>
+                    <div class="bank-detail-row">
+                        <span class="bank-detail-label">اسم الحساب</span>
+                        <span class="bank-detail-value">مؤسسة براون دوتس</span>
+                    </div>
                     <div class="bank-detail-row">
                         <span class="bank-detail-label">اسم البنك</span>
                         <span class="bank-detail-value">بنك الراجحي</span>

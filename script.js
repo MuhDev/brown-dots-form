@@ -488,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
             iconAnchor: [15, 30],
         });
 
-        function placeMarker(latlng) {
+        async function placeMarker(latlng) {
             if (window.deliveryMarker) {
                 window.deliveryMarker.setLatLng(latlng);
             } else {
@@ -499,6 +499,66 @@ document.addEventListener('DOMContentLoaded', () => {
             mapHint.classList.add('hidden');
             mapContainer.classList.add('has-marker');
             clearError('map-error');
+
+            // Set loading state
+            const cityInput = document.getElementById('city');
+            const districtInput = document.getElementById('district');
+
+            cityInput.placeholder = 'جاري البحث...';
+            districtInput.placeholder = 'جاري البحث...';
+            cityInput.value = '';
+            districtInput.value = '';
+
+            try {
+                // Reverse geocoding using Nominatim
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1&accept-language=ar`);
+                const data = await response.json();
+
+                if (data && data.address) {
+                    const address = data.address;
+
+                    // City extraction logic
+                    let city = address.city || address.town || address.village || address.county || '';
+
+                    // Validate city (Jeddah or Mecca)
+                    const allowedCities = ['جدة', 'مكة', 'مكة المكرمة'];
+                    const isAllowed = allowedCities.some(allowedCity => city.includes(allowedCity));
+
+                    // English fallbacks
+                    const isEnglishAllowed = city.toLowerCase().includes('jeddah') || city.toLowerCase().includes('makkah') || city.toLowerCase().includes('mecca');
+
+                    if (isAllowed || isEnglishAllowed) {
+                        cityInput.value = isAllowed ? city : (city.toLowerCase().includes('jeddah') ? 'جدة' : 'مكة المكرمة');
+                        clearError('city-error');
+                        clearError('map-error');
+                    } else {
+                        // Out of delivery area
+                        cityInput.value = '';
+                        showError(null, 'map-error', 'عذراً، التوصيل متاح في مدينة جدة ومكة المكرمة فقط.');
+                        // Remove marker to force them to select again safely
+                        if (window.deliveryMarker) {
+                            window.deliveryMap.removeLayer(window.deliveryMarker);
+                            window.deliveryMarker = null;
+                            latInput.value = '';
+                            lngInput.value = '';
+                            mapContainer.classList.remove('has-marker');
+                        }
+                    }
+
+                    // District extraction logic
+                    const district = address.suburb || address.neighbourhood || address.residential || address.isolated_dwelling || '';
+                    if (district) {
+                        districtInput.value = district;
+                        clearError('district-error');
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching address:', error);
+            } finally {
+                // Reset placeholders
+                cityInput.placeholder = 'جدة أو مكة';
+                districtInput.placeholder = 'اسم الحي';
+            }
         }
 
         // Click on map to place marker
