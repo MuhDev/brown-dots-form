@@ -132,23 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!method) return false;
 
         if (method.value === 'delivery') {
-            // Map location
-            const lat = document.getElementById('deliveryLat').value;
-            const lng = document.getElementById('deliveryLng').value;
-            if (!lat || !lng) {
-                showError(null, 'map-error', 'يرجى تحديد موقع التوصيل على الخريطة');
-                valid = false;
-            } else {
-                clearError('map-error');
-            }
-
             // Address Details
             const city = document.getElementById('city').value.trim();
             const district = document.getElementById('district').value.trim();
             const houseNumber = document.getElementById('houseNumber').value.trim();
 
             if (!city) {
-                showError(null, 'city-error', 'يرجى إدخال المدينة');
+                showError('city', 'city-error', 'يرجى اختيار المدينة');
                 valid = false;
             } else {
                 clearError('city-error');
@@ -336,8 +326,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (method === 'delivery') {
             const lat = document.getElementById('deliveryLat').value;
             const lng = document.getElementById('deliveryLng').value;
-            const googleMapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
-            formDataObj.append('location', googleMapsLink);
+            if (lat && lng) {
+                const googleMapsLink = `https://www.google.com/maps?q=${lat},${lng}`;
+                formDataObj.append('location', googleMapsLink);
+            }
 
             formDataObj.append('city', document.getElementById('city').value.trim());
             formDataObj.append('district', document.getElementById('district').value.trim());
@@ -504,7 +496,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const cityInput = document.getElementById('city');
             const districtInput = document.getElementById('district');
 
-            cityInput.placeholder = 'جاري البحث...';
             districtInput.placeholder = 'جاري البحث...';
             cityInput.value = '';
             districtInput.value = '';
@@ -520,7 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // City extraction logic
                     let city = address.city || address.town || address.village || address.county || '';
 
-                    // Validate city (Jeddah or Mecca)
+                    // Validate city (Jeddah, Mecca)
                     const allowedCities = ['جدة', 'مكة', 'مكة المكرمة'];
                     const isAllowed = allowedCities.some(allowedCity => city.includes(allowedCity));
 
@@ -528,7 +519,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const isEnglishAllowed = city.toLowerCase().includes('jeddah') || city.toLowerCase().includes('makkah') || city.toLowerCase().includes('mecca');
 
                     if (isAllowed || isEnglishAllowed) {
-                        cityInput.value = isAllowed ? city : (city.toLowerCase().includes('jeddah') ? 'جدة' : 'مكة المكرمة');
+                        let matchedCity = 'جدة';
+                        if (city.includes('مكة') || city.toLowerCase().includes('makkah') || city.toLowerCase().includes('mecca')) matchedCity = 'مكة المكرمة';
+
+                        cityInput.value = matchedCity;
                         clearError('city-error');
                         clearError('map-error');
                     } else {
@@ -556,7 +550,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Error fetching address:', error);
             } finally {
                 // Reset placeholders
-                cityInput.placeholder = 'جدة أو مكة';
                 districtInput.placeholder = 'اسم الحي';
             }
         }
