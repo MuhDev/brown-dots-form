@@ -14,6 +14,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const PRICE_PER_UNIT = 395;
 
+    // ===== Date Management =====
+    const dateMapping = {
+        '25-ramadan': new Date(2026, 2, 14),
+        '26-ramadan': new Date(2026, 2, 15),
+        '27-ramadan': new Date(2026, 2, 16),
+        '28-ramadan': new Date(2026, 2, 17),
+        '29-ramadan': new Date(2026, 2, 18),
+        '1-shawwal': new Date(2026, 2, 19),
+        '2-shawwal': new Date(2026, 2, 20),
+        '3-shawwal': new Date(2026, 2, 21),
+        '4-shawwal': new Date(2026, 2, 22),
+        '5-shawwal': new Date(2026, 2, 23),
+    };
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    ['delivery_date', 'pickup_date'].forEach(name => {
+        const options = document.querySelectorAll(`input[name="${name}"]`);
+        options.forEach(option => {
+            const mappedDate = dateMapping[option.value];
+            if (mappedDate && mappedDate < today) {
+                const container = option.closest('.date-option');
+                if (container) {
+                    container.style.display = 'none';
+                }
+            }
+        });
+    });
+
     // ===== File Upload Elements =====
     const fileInput = document.getElementById('paymentReceipt');
     const fileUploadArea = document.getElementById('fileUploadArea');
