@@ -21,11 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
         '27-ramadan': new Date(2026, 2, 16),
         '28-ramadan': new Date(2026, 2, 17),
         '29-ramadan': new Date(2026, 2, 18),
-        '1-shawwal': new Date(2026, 2, 19),
-        '2-shawwal': new Date(2026, 2, 20),
-        '3-shawwal': new Date(2026, 2, 21),
-        '4-shawwal': new Date(2026, 2, 22),
-        '5-shawwal': new Date(2026, 2, 23),
+        '30-ramadan': new Date(2026, 2, 19),
+        '1-shawwal': new Date(2026, 2, 20),
+        '2-shawwal': new Date(2026, 2, 21),
+        '3-shawwal': new Date(2026, 2, 22),
+        '4-shawwal': new Date(2026, 2, 23),
+        '5-shawwal': new Date(2026, 2, 24),
     };
 
     const today = new Date();
